@@ -151,7 +151,13 @@ namespace Kreta.HttpService.Service
                     }
                     else
                     {
-                        return defaultResponse;
+                        string content = await httpResponse.Content.ReadAsStringAsync();
+                        ControllerResponse? response = JsonConvert.DeserializeObject<ControllerResponse>(content);
+                        if (response is null)
+                        {
+                            defaultResponse.ClearAndAddError("A mentés http kérés hibát okozott!");
+                        }
+                        else return response;
                     }
                 }
                 catch (Exception ex)

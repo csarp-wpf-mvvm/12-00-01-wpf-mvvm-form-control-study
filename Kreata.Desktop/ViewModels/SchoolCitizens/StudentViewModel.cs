@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace Kreta.Desktop.ViewModels.SchoolCitizens
 {
@@ -22,7 +23,7 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
         private ObservableCollection<Student> _students = new();
 
         [ObservableProperty]
-        private Student _selectedStudent;
+        private Student? _selectedStudent;
 
         private string _selectedEducationLevel = string.Empty;
         public string SelectedEducationLevel
@@ -31,7 +32,8 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
             set
             {
                 SetProperty(ref _selectedEducationLevel, value);
-                SelectedStudent.EducationLevel = _selectedEducationLevel;
+                if (SelectedStudent is not null)
+                    SelectedStudent.EducationLevel = _selectedEducationLevel;
             }
         }
 
@@ -72,6 +74,10 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
                 if (!result.HasError)
                 {
                     await UpdateView();
+                    SelectedStudent = Students.FirstOrDefault(student =>student.Id == newStudent.Id);
+                    if (SelectedStudent is null && result.Id!=Guid.Empty)
+                        SelectedStudent = Students.FirstOrDefault(student =>student.Id == result.Id);
+                    SelectedStudent = SelectedStudent ?? new();
                 }
             }
         }

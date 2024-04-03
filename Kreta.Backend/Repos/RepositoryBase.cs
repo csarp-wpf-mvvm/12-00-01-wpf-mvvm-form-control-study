@@ -102,6 +102,7 @@ namespace Kreta.Backend.Repos
                 {
                     _dbSet.Add(entity);
                     await _dbContext.SaveChangesAsync();
+                    response.Id = entity.Id;
                 }
                 catch (Exception e)
                 {
