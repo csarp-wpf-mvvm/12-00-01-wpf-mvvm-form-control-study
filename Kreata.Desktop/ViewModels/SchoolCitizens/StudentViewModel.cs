@@ -20,10 +20,13 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
         private ObservableCollection<string> _educationLevels;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsDeleteButtonVisible))]
         private ObservableCollection<Student> _students = new();
 
         [ObservableProperty]
         private Student? _selectedStudent;
+
+        public bool IsDeleteButtonVisible => Students is not null && Students.Any();
 
         private string _selectedEducationLevel = string.Empty;
         public string SelectedEducationLevel
