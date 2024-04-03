@@ -7,6 +7,7 @@ using Kreta.Desktop.ViewModels.Base;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Kreta.Desktop.ViewModels.SchoolCitizens
 {
@@ -94,6 +95,10 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
             {
                 List<Student> students = await _studentService.SelectAllStudentAsync();
                 Students = new ObservableCollection<Student>(students);
+                if (Students.Any())
+                    SelectedStudent = Students.First();
+                else
+                    SelectedStudent = new();
             }
         }
 
