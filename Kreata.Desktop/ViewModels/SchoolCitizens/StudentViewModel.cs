@@ -24,9 +24,10 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
         private ObservableCollection<Student> _students = new();
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsDeleteButtonVisible))]
         private Student? _selectedStudent;
 
-        public bool IsDeleteButtonVisible => Students is not null && Students.Any();
+        public bool IsDeleteButtonVisible => Students is not null && Students.Any() && IsNewButtonVisible;
         public bool IsNewButtonVisible => SelectedStudent is not null && SelectedStudent.HasId;
         public bool IsCancelVisible => !IsNewButtonVisible;
 
@@ -117,16 +118,12 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
         void DoNewStudent()
         {
             SelectedStudent = new Student();
-            OnPropertyChanged(nameof(IsNewButtonVisible));
-            OnPropertyChanged(nameof(IsCancelVisible));
         }
 
         [RelayCommand]
         public async Task DoCancel()
         {
             await UpdateView();
-            OnPropertyChanged(nameof(IsNewButtonVisible));
-            OnPropertyChanged(nameof(IsCancelVisible));
         }
     }
 }
