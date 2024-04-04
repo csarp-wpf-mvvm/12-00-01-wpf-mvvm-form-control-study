@@ -28,6 +28,7 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
 
         public bool IsDeleteButtonVisible => Students is not null && Students.Any();
         public bool IsNewButtonVisible => SelectedStudent is not null && SelectedStudent.HasId;
+        public bool IsCancelVisible => !IsNewButtonVisible;
 
         private string _selectedEducationLevel = string.Empty;
         public string SelectedEducationLevel
@@ -117,7 +118,15 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
         {
             SelectedStudent = new Student();
             OnPropertyChanged(nameof(IsNewButtonVisible));
-            OnPropertyChanged(nameof(IsDeleteButtonVisible));
+            OnPropertyChanged(nameof(IsCancelVisible));
+        }
+
+        [RelayCommand]
+        public async Task DoCancel()
+        {
+            await UpdateView();
+            OnPropertyChanged(nameof(IsNewButtonVisible));
+            OnPropertyChanged(nameof(IsCancelVisible));
         }
     }
 }
